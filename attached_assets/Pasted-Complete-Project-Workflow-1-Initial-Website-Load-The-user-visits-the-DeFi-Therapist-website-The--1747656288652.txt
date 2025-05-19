@@ -1,0 +1,53 @@
+Complete Project Workflow
+1. Initial Website Load
+The user visits the DeFi Therapist website
+The dark mode interface presents a clean layout with the main sections:
+Header with the DeFi Therapist branding
+Hero section explaining the application's purpose
+Connect & Analyze section (prominently displayed)
+Results section (initially hidden until analysis is performed)
+2. Connecting a Wallet
+User clicks the "Connect Phantom Wallet" button
+The Phantom wallet browser extension opens a connection prompt
+User approves the connection in their Phantom wallet
+The wallet's public address and SOL balance appear in the wallet info section
+A success message confirms the successful connection
+3. Loading Trading Data
+Once connected, the application automatically fetches the user's recent trading history from the OKX DEX API
+Trading data includes:
+Trading pairs (e.g., SOL/USDC, BTC/USDC)
+Buy and sell prices
+Trade amounts
+Profit/loss calculations
+Timestamps
+A "Trades Loaded" notification shows the number of trades retrieved
+4. Analyzing Trading Behavior
+User clicks the "Get Trade Therapy Analysis" button
+A loading indicator shows that analysis is in progress
+Behind the scenes:
+The application sends the wallet address and trade data to the server
+Server formats the trade data and sends it to OpenAI's GPT-4o API
+OpenAI analyzes the trading patterns, psychological factors, and behaviors
+The AI generates a comprehensive analysis in JSON format
+The server stores this analysis in the database and returns it to the client
+5. Viewing Analysis Results
+The Results Section displays the AI's analysis with:
+A summary of overall trading activity
+Detailed trading psychology analysis
+Specific actionable recommendations
+Identified strengths (highlighted in green)
+Areas for improvement (highlighted in red)
+All text is clearly visible with proper contrast in dark mode
+6. Additional Actions
+User can disconnect their wallet if desired
+User can request a new analysis after making more trades
+Previous analyses are stored and can be retrieved for the same wallet address
+7. Technical Flow
+Frontend: React components handle UI states and API requests
+Backend: Express server processes analysis requests
+Database: Stores wallet addresses and analysis results
+APIs:
+Phantom Wallet API for wallet connection
+OKX DEX API for trade data
+OpenAI API for intelligent analysis
+This creates a seamless experience where users can connect their Solana wallet, have their trading data analyzed by AI, and receive personalized insights to improve their trading psychology and strategies.
