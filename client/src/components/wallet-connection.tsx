@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Wallet, Brain, Copy, LogOut } from "lucide-react";
+import { Brain, Copy, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PhantomWallet } from "@/lib/wallet";
 import { TradeMetrics } from "@/lib/tradeData";
@@ -67,7 +67,7 @@ export default function WalletConnection({
           </p>
           <div className="flex flex-col md:flex-row gap-4 items-center">
             <Button
-              className="bg-primary hover:bg-primary-dark text-white font-medium px-6 py-3 rounded-lg transition-colors flex items-center gap-2 w-full md:w-auto"
+              className="bg-[#AB9FF2] hover:bg-[#9D8DE8] text-white font-medium px-6 py-3 rounded-lg transition-colors flex items-center gap-2 w-full md:w-auto"
               onClick={onConnectWallet}
               disabled={isConnecting}
             >
@@ -81,7 +81,11 @@ export default function WalletConnection({
                 </>
               ) : (
                 <>
-                  <Wallet className="h-5 w-5" />
+                  <img 
+                    src="/src/assets/phantom-logo.svg" 
+                    alt="Phantom Wallet" 
+                    className="h-5 w-5 mr-1" 
+                  />
                   Connect Phantom Wallet
                 </>
               )}
@@ -144,7 +148,7 @@ export default function WalletConnection({
               {isLoadingTrades && (
                 <div id="tradesLoading">
                   <div className="flex items-center justify-center space-x-2 py-8">
-                    <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-primary"></div>
+                    <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-[#AB9FF2]"></div>
                     <span className="text-slate-300">Loading trades...</span>
                   </div>
                 </div>
@@ -155,7 +159,7 @@ export default function WalletConnection({
                   <div className="mb-3">
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-slate-400 text-sm">Trades Retrieved</span>
-                      <span className="bg-primary/20 text-primary px-2 py-1 rounded-full text-xs">
+                      <span className="bg-[#AB9FF2]/20 text-[#AB9FF2] px-2 py-1 rounded-full text-xs">
                         {tradeMetrics.totalTrades} trades
                       </span>
                     </div>
@@ -176,7 +180,7 @@ export default function WalletConnection({
                     </div>
                   </div>
                   <Button
-                    className="w-full bg-secondary hover:bg-secondary-dark text-white font-medium px-4 py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+                    className="w-full bg-[#AB9FF2] hover:bg-[#9D8DE8] text-white font-medium px-4 py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
                     onClick={onAnalyzeTrading}
                   >
                     <Brain className="h-5 w-5" />

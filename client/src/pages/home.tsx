@@ -5,9 +5,6 @@ import WalletConnection from "@/components/wallet-connection";
 import AnalysisLoading from "@/components/analysis-loading";
 import AnalysisResults from "@/components/analysis-results";
 import HowItWorks from "@/components/how-it-works";
-import PreviewDashboard from "@/components/preview-dashboard";
-import Testimonials from "@/components/testimonials";
-import Footer from "@/components/footer";
 import { Notification, useNotification } from "@/components/notification";
 import { analyzeTradingPsychology, TradeAnalysisResult } from "@/lib/openai";
 import { PhantomWallet, connectPhantomWallet, disconnectPhantomWallet } from "@/lib/wallet";
@@ -147,10 +144,7 @@ export default function Home() {
           <AnalysisResults analysis={analysisResult} />
         )}
         <HowItWorks />
-        <PreviewDashboard />
-        <Testimonials />
       </main>
-      <Footer />
     </div>
   );
 }

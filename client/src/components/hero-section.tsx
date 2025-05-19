@@ -1,4 +1,3 @@
-import { Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface HeroSectionProps {
@@ -20,7 +19,7 @@ export default function HeroSection({ onConnectWallet, isConnecting }: HeroSecti
           </p>
           <div className="flex flex-wrap gap-4">
             <Button
-              className="bg-primary hover:bg-primary-dark text-white font-medium px-6 py-3 rounded-lg transition-colors flex items-center gap-2"
+              className="bg-[#AB9FF2] hover:bg-[#9D8DE8] text-white font-medium px-6 py-3 rounded-lg transition-colors flex items-center gap-2"
               onClick={onConnectWallet}
               disabled={isConnecting}
             >
@@ -34,17 +33,15 @@ export default function HeroSection({ onConnectWallet, isConnecting }: HeroSecti
                 </>
               ) : (
                 <>
-                  <Wallet className="h-5 w-5" />
+                  <img 
+                    src="/src/assets/phantom-logo.svg" 
+                    alt="Phantom Wallet" 
+                    className="h-5 w-5 mr-2" 
+                  />
                   Connect Phantom Wallet
                 </>
               )}
             </Button>
-            <a
-              href="#how-it-works"
-              className="border border-slate-600 hover:border-slate-400 text-white px-6 py-3 rounded-lg transition-colors"
-            >
-              Learn More
-            </a>
           </div>
         </div>
         <div className="rounded-xl overflow-hidden animate-fade-in">
