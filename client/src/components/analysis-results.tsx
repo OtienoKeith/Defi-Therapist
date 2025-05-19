@@ -342,14 +342,7 @@ export default function AnalysisResults({ analysis }: AnalysisResultsProps) {
               <p className="text-slate-300 mb-4">
                 Implement these recommendations and return in 30 days for a follow-up analysis to measure your progress.
               </p>
-              <div className="flex flex-wrap gap-3">
-                <Button 
-                  className="bg-[#AB9FF2] hover:bg-[#9D8DE8] text-white px-4 py-2 rounded-lg transition-colors text-sm flex items-center gap-1"
-                  onClick={() => handleDownloadReport(analysis)}
-                >
-                  <Download className="h-4 w-4" /> Download PDF Report
-                </Button>
-              </div>
+              {/* PDF download button removed as requested */}
             </div>
           </div>
         </div>
