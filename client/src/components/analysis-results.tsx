@@ -1,35 +1,196 @@
 import { Button } from "@/components/ui/button";
 import { Download, CheckCircle, AlertCircle, Lightbulb } from "lucide-react";
 import { TradeAnalysisResult } from "@/lib/openai";
+import { jsPDF } from 'jspdf';
 
 interface AnalysisResultsProps {
   analysis: TradeAnalysisResult;
 }
 
 export default function AnalysisResults({ analysis }: AnalysisResultsProps) {
-  // Function to download the analysis report as a JSON file
+  // Function to download the analysis report as a PDF file
   const handleDownloadReport = (analysisData: TradeAnalysisResult) => {
-    // Convert the analysis data to JSON string
-    const jsonString = JSON.stringify(analysisData, null, 2);
-    
-    // Create a Blob with the JSON data
-    const blob = new Blob([jsonString], { type: 'application/json' });
-    
-    // Create a URL for the Blob
-    const url = URL.createObjectURL(blob);
-    
-    // Create a temporary anchor element for downloading
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `trading-analysis-${new Date().toISOString().split('T')[0]}.json`;
-    
-    // Append the anchor to the body, click it, and remove it
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    
-    // Revoke the URL to free up memory
-    URL.revokeObjectURL(url);
+    try {
+      // Create a new PDF document
+      const doc = new jsPDF();
+      const lineHeight = 8;
+      let y = 20;
+      
+      // Title
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(20);
+      doc.setTextColor(171, 159, 242); // Purple color similar to Phantom brand
+      doc.text("DeFi Therapist: Trading Psychology Analysis", 20, y);
+      y += lineHeight * 2;
+      
+      // Date
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(12);
+      doc.setTextColor(100, 100, 100);
+      doc.text(`Analysis date: ${new Date(analysisData.date).toLocaleDateString()}`, 20, y);
+      y += lineHeight * 2;
+      
+      // Summary Section
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.setTextColor(0, 0, 0);
+      doc.text("Trade Performance Summary", 20, y);
+      y += lineHeight * 1.5;
+      
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(12);
+      doc.text(`Trading Volume: ${analysisData.summary.tradingVolume}`, 20, y);
+      y += lineHeight;
+      doc.text(`Win Rate: ${analysisData.summary.winRate}`, 20, y);
+      y += lineHeight;
+      doc.text(`Emotional Index: ${analysisData.summary.emotionalIndex}`, 20, y);
+      y += lineHeight;
+      doc.text(`Win Rate Statistics: ${analysisData.summary.winRateStats}`, 20, y);
+      y += lineHeight * 2;
+      
+      // Patterns Section
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.text("Trading Patterns Analysis", 20, y);
+      y += lineHeight * 1.5;
+      
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(12);
+      
+      // Split the patterns summary into lines to avoid overflow
+      const patternsSummary = analysisData.patterns.summary;
+      const splitSummary = doc.splitTextToSize(patternsSummary, 170);
+      doc.text(splitSummary, 20, y);
+      y += (splitSummary.length * lineHeight) + lineHeight;
+      
+      doc.text(`Risk Management Score: ${analysisData.patterns.riskManagement * 10}%`, 20, y);
+      y += lineHeight;
+      doc.text(`Entry Timing Score: ${analysisData.patterns.entryTiming * 10}%`, 20, y);
+      y += lineHeight;
+      doc.text(`Exit Discipline Score: ${analysisData.patterns.exitDiscipline * 10}%`, 20, y);
+      y += lineHeight * 2;
+      
+      // Check if we need a new page for strengths
+      if (y > 240) {
+        doc.addPage();
+        y = 20;
+      }
+      
+      // Strengths Section
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.setTextColor(34, 197, 94); // Green color
+      doc.text("Strengths", 20, y);
+      y += lineHeight * 1.5;
+      
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      
+      // Loop through strengths
+      for (const strength of analysisData.strengths) {
+        // Check if we need a new page
+        if (y > 270) {
+          doc.addPage();
+          y = 20;
+        }
+        
+        doc.setFont("helvetica", "bold");
+        doc.text(strength.title, 20, y);
+        y += lineHeight;
+        
+        doc.setFont("helvetica", "normal");
+        const splitDesc = doc.splitTextToSize(strength.description, 170);
+        doc.text(splitDesc, 20, y);
+        y += (splitDesc.length * lineHeight) + lineHeight;
+      }
+      
+      // Check if we need a new page for weaknesses
+      if (y > 240) {
+        doc.addPage();
+        y = 20;
+      }
+      
+      // Weaknesses Section
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.setTextColor(239, 68, 68); // Red color
+      doc.text("Areas for Improvement", 20, y);
+      y += lineHeight * 1.5;
+      
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      
+      // Loop through weaknesses
+      for (const weakness of analysisData.weaknesses) {
+        // Check if we need a new page
+        if (y > 270) {
+          doc.addPage();
+          y = 20;
+        }
+        
+        doc.setFont("helvetica", "bold");
+        doc.text(weakness.title, 20, y);
+        y += lineHeight;
+        
+        doc.setFont("helvetica", "normal");
+        const splitDesc = doc.splitTextToSize(weakness.description, 170);
+        doc.text(splitDesc, 20, y);
+        y += (splitDesc.length * lineHeight) + lineHeight;
+      }
+      
+      // Check if we need a new page for recommendations
+      if (y > 240) {
+        doc.addPage();
+        y = 20;
+      }
+      
+      // Recommendations Section
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.setTextColor(59, 130, 246); // Blue color
+      doc.text("Recommendations", 20, y);
+      y += lineHeight * 1.5;
+      
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      
+      // Loop through recommendations
+      for (const recommendation of analysisData.recommendations) {
+        // Check if we need a new page
+        if (y > 270) {
+          doc.addPage();
+          y = 20;
+        }
+        
+        doc.setFont("helvetica", "bold");
+        doc.text(recommendation.title, 20, y);
+        y += lineHeight;
+        
+        doc.setFont("helvetica", "normal");
+        const splitDesc = doc.splitTextToSize(recommendation.description, 170);
+        doc.text(splitDesc, 20, y);
+        y += (splitDesc.length * lineHeight) + lineHeight;
+      }
+      
+      // Add footer
+      const pageCount = doc.getNumberOfPages();
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFont("helvetica", "italic");
+        doc.setFontSize(10);
+        doc.setTextColor(100, 100, 100);
+        doc.text("DeFi Therapist - Your Trading Psychology Analysis", 20, 290);
+        doc.text(`Page ${i} of ${pageCount}`, 180, 290);
+      }
+      
+      // Save the PDF
+      doc.save(`trading-analysis-${new Date().toISOString().split('T')[0]}.pdf`);
+    } catch (error) {
+      console.error('Failed to download report:', error);
+    }
   };
   return (
     <section id="analysisResults" className="mb-12 animate-slide-up">
@@ -186,7 +347,7 @@ export default function AnalysisResults({ analysis }: AnalysisResultsProps) {
                   className="bg-[#AB9FF2] hover:bg-[#9D8DE8] text-white px-4 py-2 rounded-lg transition-colors text-sm flex items-center gap-1"
                   onClick={() => handleDownloadReport(analysis)}
                 >
-                  <Download className="h-4 w-4" /> Download Report
+                  <Download className="h-4 w-4" /> Download PDF Report
                 </Button>
               </div>
             </div>
