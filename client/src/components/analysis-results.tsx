@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Download, Share2, CheckCircle, AlertCircle, Lightbulb } from "lucide-react";
+import { Download, CheckCircle, AlertCircle, Lightbulb } from "lucide-react";
 import { TradeAnalysisResult } from "@/lib/openai";
 
 interface AnalysisResultsProps {
@@ -7,6 +7,30 @@ interface AnalysisResultsProps {
 }
 
 export default function AnalysisResults({ analysis }: AnalysisResultsProps) {
+  // Function to download the analysis report as a JSON file
+  const handleDownloadReport = (analysisData: TradeAnalysisResult) => {
+    // Convert the analysis data to JSON string
+    const jsonString = JSON.stringify(analysisData, null, 2);
+    
+    // Create a Blob with the JSON data
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    
+    // Create a URL for the Blob
+    const url = URL.createObjectURL(blob);
+    
+    // Create a temporary anchor element for downloading
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `trading-analysis-${new Date().toISOString().split('T')[0]}.json`;
+    
+    // Append the anchor to the body, click it, and remove it
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    
+    // Revoke the URL to free up memory
+    URL.revokeObjectURL(url);
+  };
   return (
     <section id="analysisResults" className="mb-12 animate-slide-up">
       <div className="bg-dark-lighter rounded-xl shadow-lg overflow-hidden">
@@ -159,15 +183,10 @@ export default function AnalysisResults({ analysis }: AnalysisResultsProps) {
               </p>
               <div className="flex flex-wrap gap-3">
                 <Button 
-                  className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors text-sm flex items-center gap-1"
+                  className="bg-[#AB9FF2] hover:bg-[#9D8DE8] text-white px-4 py-2 rounded-lg transition-colors text-sm flex items-center gap-1"
+                  onClick={() => handleDownloadReport(analysis)}
                 >
                   <Download className="h-4 w-4" /> Download Report
-                </Button>
-                <Button 
-                  variant="outline"
-                  className="border border-slate-600 hover:border-slate-400 text-white px-4 py-2 rounded-lg transition-colors text-sm flex items-center gap-1"
-                >
-                  <Share2 className="h-4 w-4" /> Share Analysis
                 </Button>
               </div>
             </div>
