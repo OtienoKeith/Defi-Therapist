@@ -1,14 +1,7 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "client/**/*",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "client/dist"
-      }
-    }
-  ],
+  "buildCommand": "cd client && npm install && npm run build",
+  "outputDirectory": "client/dist",
   "routes": [
     {
       "src": "/api/(.*)",
@@ -20,11 +13,8 @@
     }
   ],
   "functions": {
-    "api/**/*.js": {
+    "api/**/*.ts": {
       "runtime": "nodejs18.x"
     }
-  },
-  "env": {
-    "NODE_ENV": "production"
   }
 }
