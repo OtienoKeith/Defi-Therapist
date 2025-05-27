@@ -23,7 +23,7 @@ export default defineConfig(async () => ({
   },
   root: path.resolve(import.meta.dirname, "client"),
   build: {
-    outDir: path.resolve(import.meta.dirname, "dist"), // ✅ Corrected here
+    outDir: "dist",   // output folder inside client/dist
     emptyOutDir: true,
   },
 }));
